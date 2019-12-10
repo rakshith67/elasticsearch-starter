@@ -3,33 +3,152 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>elasticsearch</groupId>
-  <artifactId>elasticsearch--starter</artifactId>
+  <artifactId>elasticsearch-starter</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>elasticsearch--starter</name>
+  <name>elasticsearch-starter</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <swagger.file>${project.basedir}/src/main/resources/Api.yaml</swagger.file>
+    <model-package></model-package>
+    <api-package></api-package>
+    <springboot.version>2.1.0.RELEASE</springboot.version>
+    <java.version>1.9</java.version>
+    <version.io.swagger>2.2.2</version.io.swagger>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
    <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
     	<groupId>org.elasticsearch</groupId>
     	<artifactId>elasticsearch</artifactId>
     	<version>7.5.0</version>
 	</dependency>
+	<dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-api</artifactId>
+    	<version>1.7.29</version>
+	</dependency>
+	<dependency>
+    	<groupId>javax.servlet</groupId>
+    	<artifactId>javax.servlet-api</artifactId>
+    	<version>4.0.1</version>
+    	<scope>provided</scope>
+	</dependency>
+	<dependency>
+    	<groupId>io.swagger</groupId>
+    	<artifactId>swagger-annotations</artifactId>
+    	<version>1.5.16</version>
+	</dependency>
+	<dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+		<scope>provided</scope>
+		<version>1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    
     <dependency>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot</artifactId>
-    	<version>2.0.6.RELEASE</version>
+    	<version>${springboot.version}</version>
 	</dependency>
+	<dependency>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-autoconfigure</artifactId>
+    	<version>${springboot.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+		<version>${springboot.version}</version>
+    </dependency>
+    <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter</artifactId>
+		<version>${springboot.version}</version>
+    </dependency>
+     <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+		<version>${springboot.version}</version>
+    </dependency>
+    
   </dependencies>
+  
+  <build>
+        
+        <plugins>
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>2.4.10</version>
+                <executions>
+                    <execution>
+                        <id>1</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${swagger.file}</inputSpec>
+                            <language>spring</language>
+                            <templateDirectory>src/main/resources</templateDirectory>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <sourceFolder>src/main/java</sourceFolder>
+                                <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                            <modelPackage>${model-package}</modelPackage>
+                            <apiPackage>${api-package}</apiPackage>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+        
+        <pluginManagement>
+        	<plugins>
+        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        		<plugin>
+        			<groupId>org.eclipse.m2e</groupId>
+        			<artifactId>lifecycle-mapping</artifactId>
+        			<version>1.0.0</version>
+        			<configuration>
+        				<lifecycleMappingMetadata>
+        					<pluginExecutions>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>io.swagger</groupId>
+        								<artifactId>
+        									swagger-codegen-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[2.4.10,)
+        								</versionRange>
+        								<goals>
+        									<goal>generate</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
+        							</action>
+        						</pluginExecution>
+        					</pluginExecutions>
+        				</lifecycleMappingMetadata>
+        			</configuration>
+        		</plugin>
+        	</plugins>
+        </pluginManagement>
+  </build>
 </project>
